@@ -1,18 +1,42 @@
 <?php
-    $link = mysqli_connect("localhost","root","1234");
-    mysqli_set_charset($link,'utf8');
-    mysqli_query($link,"Use room;");
-    $sql = "select * from counter;";
+    def add(a, b):
+    if a < 0 or b < 0:
+        return 0
+    return a + b
 
-    $result = mysqli_query($link,$sql);
-    while ($dbarr = mysqli_fetch_array($result)){
-        $pgcount = $dbarr["countnum"];
-    }
-    $pgcount = $pgcount + 1;
-    $pgcount = "00000" . $pgcount;
-    $pgcount = substr($pgcount, -6);
-    echo "$pgcount";
+print(add(2, 3))
+        
+    $from main import add
 
-    $sql = "Update counter set countnum = '$pgcount' where id = 1";
-    $result = mysqli_query($link,$sql);
+def test_add():
+    assert add(2, 3) == 5
+    assert add(-1, 3) == 0
+
+  name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      - name: Run tests
+        run: pytest
 ?>
